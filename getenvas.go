@@ -274,3 +274,120 @@ func DurationVar(out *time.Duration, key string, default_value time.Duration) er
 	}
 	return nil
 }
+
+// Utility used to prefix key names of environment variables.
+type KeyPrefix struct {
+	Prefix string
+}
+
+// Create an instance of KeyPrefix with a specific prefix.
+func Prefixed(prefix string) *KeyPrefix {
+	return &KeyPrefix{prefix}
+}
+
+// Retrieve the prefix associated with a KeyPrefix instance.
+func (p *KeyPrefix) Get() string {
+	return p.Prefix
+}
+
+// Modify the prefix associated with a KeyPrefix instance.
+func (p *KeyPrefix) Set(prefix string) {
+	p.Prefix = prefix
+}
+
+// Prefix the specified key and return a string with the resulted name.
+func (p *KeyPrefix) Do(key string) string {
+	bs := make([]byte, len(p.Prefix)+len(key))
+	copy(bs[copy(bs, p.Prefix):], key)
+	return string(bs)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) String(key string, default_value string) string {
+	return String(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) StringVar(out *string, key string, default_value string) {
+	StringVar(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Bool(key string, default_value bool) (bool, error) {
+	return Bool(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) BoolVar(out *bool, key string, default_value bool) error {
+	return BoolVar(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Int(key string, default_value int) (int, error) {
+	return Int(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) IntVar(out *int, key string, default_value int) error {
+	return IntVar(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Uint(key string, default_value uint) (uint, error) {
+	return Uint(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) UintVar(out *uint, key string, default_value uint) error {
+	return UintVar(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Int64(key string, default_value int64) (int64, error) {
+	return Int64(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Int64Var(out *int64, key string, default_value int64) error {
+	return Int64Var(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Uint64(key string, default_value uint64) (uint64, error) {
+	return Uint64(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Uint64Var(out *uint64, key string, default_value uint64) error {
+	return Uint64Var(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Float32(key string, default_value float32) (float32, error) {
+	return Float32(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Float32Var(out *float32, key string, default_value float32) error {
+	return Float32Var(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Float64(key string, default_value float64) (float64, error) {
+	return Float64(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Float64Var(out *float64, key string, default_value float64) error {
+	return Float64Var(out, p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) Duration(key string, default_value time.Duration) (time.Duration, error) {
+	return Duration(p.Do(key), default_value)
+}
+
+// Alias of the similarly named function which prefixes the specified key before forwarding the request.
+func (p *KeyPrefix) DurationVar(out *time.Duration, key string, default_value time.Duration) error {
+	return DurationVar(out, p.Do(key), default_value)
+}
