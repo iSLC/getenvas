@@ -1,6 +1,34 @@
 # Description
 Go lang utility to retrieve an environment variable as a certain value type or fall back to a default value if not set.
 
+# Logic
+
+### If an environment variable **doesn't** exists with the specified name then the result is:
+   1. The default/fall-back value that was specified.
+   2. A `nil` value as the error.
+
+**NOTE**: If you're using one of the `[type]Var` variants then:
+  1. The output variable gets assigned the default/fall-back value that was specified.
+  2. A `nil` value is returned as the error.
+
+### If an environment variable **does** exists with the specified name then the result is:
+  1. The current value of the environment variable converted to the requested type.
+  2. A `nil` value as the error (*unless. see conversion failure bellow*).
+
+**NOTE**: If you're using one of the `[type]Var` variants then:
+  1. The output variable gets assigned the current value of the environment variable converted to the requested type.
+  2. A `nil` value is returned as the error (*unless. see conversion failure bellow*).
+
+### If the requested value requires conversion to another type and a parsing error occurs then the result is:
+   1. The default/fall-back value that was specified.
+   2. The error that resulted during the conversion/parsing.
+
+**NOTE**: If you're using one of the `[type]Var` variants then:
+  1. The output variable gets assigned the default/fall-back value that was specified.
+  2. The error that resulted during the conversion/parsing is returned as the error.
+
+**NOTE** The string type does not require conversion and therefore it cannot yield an error. So it doesn't include one in the returned values.
+
 # Basic Example
 ```go
 package main
@@ -103,8 +131,8 @@ func main() {
   // Again, strings don't need to return any errors
   getenvas.StringVar(&str_var, "GETENVAS_STRING_VARIABLE", "default")
   fmt.Println("GETENVAS_STRING_VARIABLE:", str_var)
-  var int_var int
 
+  var int_var int
   if err := getenvas.IntVar(&int_var, "GETENVAS_INT_VARIABLE", 556); err != nil {
     fmt.Println("GETENVAS_INT_VARIABLE:", int_var, err) // int_var is filled with default value
   }
